@@ -1,34 +1,36 @@
-// imports pacakges
-const express = require("express")
-const mongoose = require("mongoose")
-const cors  = require("cors")
+// import packages
+const express = require('express')
+const mongoose = require('mongoose')
+const cors = require('cors')
+require('dotenv/config')
+
+// adding routers
+const OrderRouter = require('./Routers/orderRouter')
+const userRouter = require('./Routers/userRouter')
+const Daily_manufRouter = require('./Routers/Daily_manufRouter')
+
+// inilization
 const app = express()
-require("dotenv/config")
-const Salesroute = require("./Routing/SalesRoutes")
-const Categoryroute = require("./Routing/CategoryRoutes") 
-const Subategoryroute = require("./Routing/SubcategoryRoutes")
-const Employeeroute = require("./Routing/EmployeeRoutings")
+app.cors = cors()
 
-
-// middleware
+// midd
 app.use(express.json())
-app.use(cors())
 
+// url
+app.use('/api/order',OrderRouter)
+app.use('/api/user',userRouter)
+app.use('/api/daily_manuf',Daily_manufRouter)
 
-// By Default Get req
-app.get('/',(req,res)=>{
-    res.send("This Is Backend-1")
-})
-
-// urls
-app.use("/api/sales",Salesroute)
-app.use("/api/Categorys",Categoryroute)
-app.use("/api/Subcategorys",Subategoryroute)
-app.use("/api/employee",Employeeroute)
-
-// connection
+// listen
 app.listen(process.env.PORT)
 
+// default get
+app.get('/', (req, res) => {
+    res.send('This is Backend-2')
+})
+
+
+// connection string
 async function main() {
     const res = await mongoose.connect(process.env.DB,{useNewUrlParser: true,
         useUnifiedTopology: true})
@@ -36,4 +38,5 @@ async function main() {
         console.log(data.STATES['1']);
 }
 main()
+
 
